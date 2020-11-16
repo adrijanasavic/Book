@@ -1,6 +1,8 @@
 package com.example.book.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,10 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,12 +40,15 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnItemC
     private EditText naziv;
     private Book book;
 
+    private Toolbar toolbar;
+
     private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupToolbar();
 
         button = findViewById(R.id.btn_dodajte);
         button.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnItemC
 
                     try {
                         getDatabaseHelper().getBookDao().create(book);
-                        Toast.makeText(MainActivity.this, "Uneta je nova knjiga", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Uneta je nova knjiga " + book.getmNaziv(), Toast.LENGTH_LONG).show();
 
                         refresh();
 
@@ -97,6 +106,47 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnItemC
         });
 
         addNewDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.search:
+
+                setTitle("Pretraga");
+                break;
+            case android.R.id.home:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void setupToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitle("Search books --->");
+
+
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.back);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.show();
+        }
     }
 
     public static boolean validateInput(EditText editText) {

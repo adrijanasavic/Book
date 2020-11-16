@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
-
+<include layout="@layout/include_toolbar"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,6 +18,12 @@
             android:layout_height="250dp"
             android:src="@drawable/book" />
 
+<!--        <Button-->
+<!--            android:id="@+id/btn_search"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:drawableBottom="@android:drawable/ic_search_category_default" />-->
 
         <Button
             android:id="@+id/btn_dodajte"
